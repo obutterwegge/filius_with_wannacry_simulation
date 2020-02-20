@@ -45,6 +45,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 
@@ -52,12 +53,17 @@ import filius.Main;
 import filius.gui.GUIContainer;
 import filius.gui.anwendungssicht.GUIDesktopWindow;
 import filius.hardware.Verbindung;
+import jdk.internal.jline.internal.Log;
+import jdk.jfr.internal.LogLevel;
 
 /**
  * In dieser Klasse werden die Verwaltungs-Informationen des Rahmenprogramms verwaltet, die unabhaengig von einem
  * bestimmten Projekt sind.
  */
 public class Information implements Serializable {
+
+    private static final Logger logger = Logger.getLogger(Information.class.getName());
+
     public enum FeatureMode {
         FORCE_DISABLE, FORCE_ENABLE, AUTO
     }
@@ -616,7 +622,7 @@ public class Information implements Serializable {
                 iniFile = new RandomAccessFile(tmpFile.getAbsolutePath(), "r");
                 int width = 0;
                 int height = 0;
-                for (String line; (line = iniFile.readLine()) != null;) {
+                for (String line; (line = iniFile.readLine()) != null; ) {
                     if (!line.trim().equals("") && !line.trim().startsWith("#")) {
                         StringTokenizer st = new StringTokenizer(line, "=");
 
@@ -660,11 +666,13 @@ public class Information implements Serializable {
                                 } else if (configKey.equalsIgnoreCase("pane-width")) {
                                     try {
                                         width = Integer.parseInt(configValue);
-                                    } catch (NumberFormatException e) {}
+                                    } catch (NumberFormatException e) {
+                                    }
                                 } else if (configKey.equalsIgnoreCase("pane-height")) {
                                     try {
                                         height = Integer.parseInt(configValue);
-                                    } catch (NumberFormatException e) {}
+                                    } catch (NumberFormatException e) {
+                                    }
                                 }
                             }
 

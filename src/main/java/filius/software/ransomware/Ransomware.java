@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class Ransomware extends Anwendung {
 
-    private Logger logger;
+    private static final Logger logger = Logger.getLogger(Ransomware.class.getName());
     private PublicKey publicKey;
     private PrivateKey privateKey;
 
@@ -36,9 +36,11 @@ public class Ransomware extends Anwendung {
         return privateKey;
     }
 
+    /**
+     * Encrypt all Data in the Filesystem
+     */
     public void encryptData() {
         Dateisystem dateisystem = getSystemSoftware().getDateisystem();
-        //Wenn das gesuchte verzeichnis leer ist, liefert es root zurück, wenn ich dann in der Suche nach * müssten alle Dateien aufgelistet werden!
         LinkedList<Datei> linkedList = dateisystem.dateiSuche("", "*");
         for (Datei datei :
                 linkedList) {
@@ -52,9 +54,11 @@ public class Ransomware extends Anwendung {
         }
     }
 
+    /**
+     * Decrypt all Data in the Filesystem
+     */
     public void decryptData() {
         Dateisystem dateisystem = getSystemSoftware().getDateisystem();
-        //Wenn das gesuchte verzeichnis leer ist, liefert es root zurück, wenn ich dann in der Suche nach * müssten alle Dateien aufgelistet werden!
         LinkedList<Datei> linkedList = dateisystem.dateiSuche("", "*");
         for (Datei datei :
                 linkedList) {

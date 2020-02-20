@@ -5,11 +5,11 @@ import filius.software.ransomware.Ransomware;
 import javax.swing.*;
 import java.util.Observable;
 
-public class GUIRansomware extends GUIApplicationWindow {
+public class GUIApplicationRansomware extends GUIApplicationWindow {
 
     private Ransomware ransomware;
 
-    public GUIRansomware(GUIDesktopPanel desktop, String appKlasse) {
+    public GUIApplicationRansomware(GUIDesktopPanel desktop, String appKlasse) {
         super(desktop, appKlasse);
         ransomware = new Ransomware();
         initComponents();
