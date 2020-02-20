@@ -11,9 +11,11 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 public class Ransomware extends Anwendung {
 
+    private Logger logger;
     private PublicKey publicKey;
     private PrivateKey privateKey;
 
@@ -26,7 +28,7 @@ public class Ransomware extends Anwendung {
             privateKey = keyPair.getPrivate();
             publicKey = keyPair.getPublic();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            logger.warning("An error Occured while generating the Pair of Keys: "+e.getMessage());
         }
     }
 
@@ -45,7 +47,7 @@ public class Ransomware extends Anwendung {
                 cipher.init(Cipher.ENCRYPT_MODE, publicKey);
                 datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
             } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                e.printStackTrace();
+                logger.warning("An error occur while encrypt the files: "+e.getMessage());
             }
         }
     }
@@ -61,7 +63,7 @@ public class Ransomware extends Anwendung {
                 cipher.init(Cipher.DECRYPT_MODE, publicKey);
                 datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
             } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                e.printStackTrace();
+                logger.warning("An error occur while decrypting the files: "+e.getMessage());
             }
         }
     }
