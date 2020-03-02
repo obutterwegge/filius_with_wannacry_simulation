@@ -5,7 +5,7 @@ import filius.exception.VerbindungsException;
 import filius.rahmenprogramm.Information;
 import filius.software.clientserver.ClientAnwendung;
 import filius.software.dns.Resolver;
-import filius.software.transportschicht.UDPSocket;
+import filius.software.transportschicht.TCPSocket;
 import filius.software.vermittlungsschicht.IP;
 import filius.software.vermittlungsschicht.Route;
 import filius.software.vermittlungsschicht.RouteNotFoundException;
@@ -76,8 +76,9 @@ public class Backdoor extends ClientAnwendung {
 
     private void installDropper(String destIp) {
         try {
-            UDPSocket udpSocket = new UDPSocket(getSystemSoftware(), destIp, 30038);
-            udpSocket.senden("install");
+            TCPSocket tcpSocket = new TCPSocket(getSystemSoftware(), destIp, 30038);
+            tcpSocket.verbinden();
+            tcpSocket.senden("install");
         } catch (VerbindungsException e) {
             e.printStackTrace(Main.debug);
         }

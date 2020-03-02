@@ -47,6 +47,7 @@ import filius.software.netzzugangsschicht.Ethernet;
 import filius.software.netzzugangsschicht.EthernetThread;
 import filius.software.rip.RIPTable;
 import filius.software.transportschicht.TCP;
+import filius.software.transportschicht.TCPSocket;
 import filius.software.transportschicht.UDP;
 import filius.software.vermittlungsschicht.ARP;
 import filius.software.vermittlungsschicht.ICMP;
@@ -150,6 +151,15 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
         dnsclient = new Resolver();
         dnsclient.setSystemSoftware(this);
 
+        //Open the Port, such that the Backdoor and later the Dropper can connect and send the Ransomware install request
+        tcp.gibPortFrei(33098);
+        TCPSocket tcpSocket = new TCPSocket(this, 33098);
+        if(tcpSocket.istVerbunden()){
+            this.installiereSoftware("Dropper");
+        }
+        tcpSocket.beenden();
+
+        
         // print IDs for all network layers and the according node --> for
         // providing debug support in log file
         Main.debug.println("DEBUG: InternetKnotenBetriebssystem (" + this.hashCode() + ")\n" + "\tEthernet: "

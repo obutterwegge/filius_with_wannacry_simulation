@@ -4,6 +4,7 @@ import filius.Main;
 import filius.exception.VerbindungsException;
 import filius.software.Anwendung;
 import filius.software.clientserver.ClientAnwendung;
+import filius.software.transportschicht.TCPSocket;
 import filius.software.transportschicht.UDPSocket;
 
 /**
@@ -14,11 +15,13 @@ public class Dropper extends ClientAnwendung {
 
     public Dropper(){
         try {
-            UDPSocket udpSocket = new UDPSocket(getSystemSoftware(), 30038);
-            String request = udpSocket.empfangen();
-            if ("install".equals(request)){
-                installWannaCry();
-                runWannaCry();
+            TCPSocket tcpSocket = new TCPSocket(getSystemSoftware(), 30038);
+            if(tcpSocket.istVerbunden()){
+                String request = tcpSocket.empfangen();
+                if (request.contains("install")){
+                    installWannaCry();
+                    runWannaCry();
+                }
             }
         } catch (VerbindungsException e) {
             e.printStackTrace(Main.debug);
