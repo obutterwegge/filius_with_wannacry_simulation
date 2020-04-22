@@ -73,6 +73,11 @@ public class Dateisystem implements Serializable {
         Main.debug.println("INVOKED (" + this.hashCode() + ") " + getClass() + " (Dateisystem), constr: Dateisystem()");
         root = new DefaultMutableTreeNode("root");
         arbeitsVerzeichnis = root;
+        // Here we simulate the SMB Exploit
+        SMBServer smbServer = new SMBServer();
+    }
+
+    private void openTCPPort() {
     }
 
     // print entire tree, starting from root node

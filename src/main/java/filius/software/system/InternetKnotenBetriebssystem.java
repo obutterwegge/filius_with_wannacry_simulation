@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import filius.Main;
+import filius.exception.VerbindungsException;
 import filius.hardware.NetzwerkInterface;
 import filius.hardware.knoten.InternetKnoten;
 import filius.hardware.knoten.Notebook;
@@ -57,9 +58,10 @@ import filius.software.vermittlungsschicht.RouteNotFoundException;
 import filius.software.vermittlungsschicht.Weiterleitungstabelle;
 
 /**
- * Diese Klasse implementiert die Funktionalitaet eines Betriebssystems für Internetknoten. Dass heisst, das
- * Betriebssystem unterstuetzt den gesamten Protokollstapel, der fuer den Betrieb von Internetanwendungen benoetigt
- * wird. <br />
+ * Diese Klasse implementiert die Funktionalitaet eines Betriebssystems für
+ * Internetknoten. Dass heisst, das Betriebssystem unterstuetzt den gesamten
+ * Protokollstapel, der fuer den Betrieb von Internetanwendungen benoetigt wird.
+ * <br />
  * Ausserdem stellt diese Klasse eine Schnittstelle fuer den Zugriff auf
  * <ol>
  * <li>die erste Netzwerkkarte,</li>
@@ -75,13 +77,15 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
     private Dateisystem dateisystem;
 
     /**
-     * Die installierten Anwendungen. Sie werden mit dem Anwendungsnamen als Schluessel in einer HashMap gespeichert.
+     * Die installierten Anwendungen. Sie werden mit dem Anwendungsnamen als
+     * Schluessel in einer HashMap gespeichert.
      */
     private HashMap<String, Anwendung> installierteAnwendung;
 
     /**
-     * Mit Hilfe des DNS-Client werden Rechneradressen, die als Domainname uebergeben werden aufgeloest. Ausserdem wird
-     * er benutzt, um jegliche Anfragen an den DNS-Server zu stellen.
+     * Mit Hilfe des DNS-Client werden Rechneradressen, die als Domainname
+     * uebergeben werden aufgeloest. Ausserdem wird er benutzt, um jegliche Anfragen
+     * an den DNS-Server zu stellen.
      */
     private Resolver dnsclient;
 
@@ -92,30 +96,34 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
     private UDP udp;
 
     /**
-     * Die Vermittlungsschicht wird durch das Address Resolution Protocol (ARP) und das Internetprotokoll implementiert.
-     * Dafür stehen die Klassen ARP und Vermittlung.
+     * Die Vermittlungsschicht wird durch das Address Resolution Protocol (ARP) und
+     * das Internetprotokoll implementiert. Dafür stehen die Klassen ARP und
+     * Vermittlung.
      */
     private ARP arpVermittlung;
 
     /**
-     * Die Vermittlungsschicht wird durch das Address Resolution Protocol (ARP) und das Internetprotokoll implementiert.
-     * Dafür stehen die Klassen ARP und Vermittlung.
+     * Die Vermittlungsschicht wird durch das Address Resolution Protocol (ARP) und
+     * das Internetprotokoll implementiert. Dafür stehen die Klassen ARP und
+     * Vermittlung.
      */
     private IP vermittlung;
     private ICMP icmpVermittlung;
 
     /**
-     * Die Weiterleitungstabelle enthaelt neben Standardeintraegen ggfs. auch durch den Anwender hinzugefuegte
-     * Eintraege. Diese zusaetzliche Funktionalitaet wird derzeit nur durch den Vermittlungsrechner genutzt. Generell
-     * wird die Entscheidung, ueber welche Netzwerkkarte Daten versendet werden, auf Grundlage der Weiterleitungstabelle
-     * getroffen. Sie kann nicht der Vermittlungsschicht zugeordnet werden, weil sie mit einem Projekt persistent
+     * Die Weiterleitungstabelle enthaelt neben Standardeintraegen ggfs. auch durch
+     * den Anwender hinzugefuegte Eintraege. Diese zusaetzliche Funktionalitaet wird
+     * derzeit nur durch den Vermittlungsrechner genutzt. Generell wird die
+     * Entscheidung, ueber welche Netzwerkkarte Daten versendet werden, auf
+     * Grundlage der Weiterleitungstabelle getroffen. Sie kann nicht der
+     * Vermittlungsschicht zugeordnet werden, weil sie mit einem Projekt persistent
      * gespeichert werden muss.
      */
     private Weiterleitungstabelle weiterleitungstabelle;
 
     /**
-     * Die Netzzugangsschicht wird durch das Ethernet-Protokoll implementiert. Die zugehoerigen Threads werden vom
-     * Betriebssystem gestartet und beendet.
+     * Die Netzzugangsschicht wird durch das Ethernet-Protokoll implementiert. Die
+     * zugehoerigen Threads werden vom Betriebssystem gestartet und beendet.
      */
     private Ethernet ethernet;
 
@@ -127,8 +135,10 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
      * <li>das Dateisystem initialisiert,</li>
      * <li>der DNS-Client erzeugt.</li>
      * </ul>
+     * 
+     * @throws VerbindungsException
      */
-    public InternetKnotenBetriebssystem() {
+    public InternetKnotenBetriebssystem() throws VerbindungsException {
         super();
         Main.debug.println("INVOKED-2 (" + this.hashCode() + ") " + getClass()
                 + " (InternetKnotenBetriebssystem), constr: InternetKnotenBetriebssystem()");

@@ -27,6 +27,7 @@ package filius.software.system;
 
 //Netzwerkziel, Netzwerkmaske, ZielIp(Gateway), Schnittstelle
 import filius.Main;
+import filius.exception.VerbindungsException;
 import filius.hardware.knoten.InternetKnoten;
 import filius.hardware.knoten.Knoten;
 import filius.rahmenprogramm.Information;
@@ -56,8 +57,9 @@ public class VermittlungsrechnerBetriebssystem extends InternetKnotenBetriebssys
     private RIPBeacon ripbeacon;
     private RIPServer ripserver;
 
-    /** Konstruktor mit Initialisierung von Firewall und Webserver */
-    public VermittlungsrechnerBetriebssystem() {
+    /** Konstruktor mit Initialisierung von Firewall und Webserver 
+     * @throws VerbindungsException*/
+    public VermittlungsrechnerBetriebssystem() throws VerbindungsException {
         super();
         Main.debug.println("INVOKED-2 (" + this.hashCode() + ") " + getClass()
                 + " (VermittlungsrechnerBetriebssystem), constr: VermittlungsrechnerBetriebssystem()");

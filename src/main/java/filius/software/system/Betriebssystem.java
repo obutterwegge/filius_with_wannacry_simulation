@@ -26,14 +26,16 @@
 package filius.software.system;
 
 import filius.Main;
+import filius.exception.VerbindungsException;
 import filius.software.dhcp.DHCPClient;
 import filius.software.dhcp.DHCPServer;
 import filius.software.rip.RIPTable;
 
 /**
- * Diese Klasse stellt die Funktionalitaet eines Betriebssystems fuer Hosts (d. h. Rechner und Notebooks) zur
- * Verfuegung. Spezifisch ist die Moeglichkeit, einen DHCP-Server zu installieren und die Konfiguration der
- * Netzwerkkarten mit DHCP durchzufuehren. Die weitere Funktionalitaet wird von der Oberklasse
+ * Diese Klasse stellt die Funktionalitaet eines Betriebssystems fuer Hosts (d.
+ * h. Rechner und Notebooks) zur Verfuegung. Spezifisch ist die Moeglichkeit,
+ * einen DHCP-Server zu installieren und die Konfiguration der Netzwerkkarten
+ * mit DHCP durchzufuehren. Die weitere Funktionalitaet wird von der Oberklasse
  * (InternetKnotenBetriebssystem) zur Verfuegung gestellt.
  * 
  */
@@ -48,8 +50,8 @@ public class Betriebssystem extends InternetKnotenBetriebssystem {
     /** der DHCP-Server, der aktiviert und deaktiviert werden kann */
     private DHCPServer dhcpServer;
     /**
-     * der DHCP-Client, der zur Konfiguration der Netzwerkkarte genutzt wird, wenn die Konfiguration mit DHCP erfolgen
-     * soll
+     * der DHCP-Client, der zur Konfiguration der Netzwerkkarte genutzt wird, wenn
+     * die Konfiguration mit DHCP erfolgen soll
      * 
      * @see dhcpKonfiguration
      */
@@ -57,8 +59,10 @@ public class Betriebssystem extends InternetKnotenBetriebssystem {
 
     /**
      * Konstruktur, in dem DHCP-Client und -Server initialisiert werden
+     * 
+     * @throws VerbindungsException
      */
-    public Betriebssystem() {
+    public Betriebssystem() throws VerbindungsException {
         super();
         Main.debug.println("INVOKED-2 (" + this.hashCode() + ") " + getClass()
                 + " (Betriebssystem), constr: Betriebssystem()");
