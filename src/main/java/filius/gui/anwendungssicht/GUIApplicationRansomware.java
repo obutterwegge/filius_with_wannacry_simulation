@@ -1,8 +1,11 @@
 package filius.gui.anwendungssicht;
 
+import javax.swing.*;
+
 import filius.software.ransomware.Ransomware;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Observable;
 
 /**
@@ -10,35 +13,59 @@ import java.util.Observable;
  */
 public class GUIApplicationRansomware extends GUIApplicationWindow {
 
-    private Ransomware ransomware;
+    private JLabel lockImg;
+    private JLabel raiseLabel;
+    private JLabel endLabel;
+    private JButton purchaseButton;
+    private JButton decryptButton;
+    private JTextField privateKeyField;
+    private JTextArea InformationField;
+    private 
 
-    public GUIApplicationRansomware(GUIDesktopPanel desktop, String appKlasse) {
+    GUIApplicationRansomware(GUIDesktopPanel desktop, String appKlasse) {
         super(desktop, appKlasse);
-        ransomware = new Ransomware();
+        setVisible(false);
+        ((Ransomware) holeAnwendung()).hinzuBeobachter(this);
         initComponents();
     }
 
     private void initComponents() {
+        //construct components
+        lockImg = new JLabel ("Lock");
+        raiseLabel = new JLabel ("Raise");
+        endLabel = new JLabel ("no encryption");
+        purchaseButton = new JButton ("purchase");
+        decryptButton = new JButton ("decrypt");
+        privateKeyField = new JTextField (5);
+        InformationField = new JTextArea (5, 5);
 
-        JButton encryptButton = new JButton("Encrypt Data");
-        JTextArea currentKey = new JTextArea();
-        encryptButton.addActionListener(actionEvent -> {
-            ransomware.starten();
-            ransomware.encryptData();
-            currentKey.setText(ransomware.getPrivateKey().toString());
-        });
-        JButton decryptButton = new JButton("Decrypt Data");
-        decryptButton.addActionListener(actionEvent -> ransomware.decryptData());
-        JLabel currentKeyLabel = new JLabel("Current Private Key");
-        Box box = Box.createHorizontalBox();
-        box.add(encryptButton);
-        box.add(decryptButton);
-        box.add(currentKeyLabel);
-        box.add(currentKey);
+        //adjust size and set layout
+        setPreferredSize (new Dimension (801, 497));
+        setLayout (null);
+        setBackground(Color.MAGENTA);
+
+        //add components
+        add (lockImg);
+        add (raiseLabel);
+        add (endLabel);
+        add (purchaseButton);
+        add (decryptButton);
+        add (privateKeyField);
+        add (InformationField);
+
+        //set component bounds (only needed by Absolute Positioning)
+        lockImg.setBounds (30, 15, 165, 135);
+        raiseLabel.setBounds (30, 160, 165, 135);
+        endLabel.setBounds (30, 340, 165, 135);
+        purchaseButton.setBounds (355, 430, 100, 25);
+        decryptButton.setBounds (645, 430, 100, 25);
+        privateKeyField.setBounds (360, 380, 385, 30);
+        InformationField.setBounds (360, 15, 385, 335);
+
     }
 
     @Override
     public void update(Observable observable, Object o) {
-
+        setVisible(true);
     }
 }

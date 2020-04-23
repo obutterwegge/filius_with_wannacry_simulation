@@ -1,8 +1,11 @@
 package filius.software.dropper;
 
+import java.security.PublicKey;
+
 import filius.Main;
 import filius.software.Anwendung;
 import filius.software.eternalblue.EternalBlue;
+import filius.software.ransomware.Ransomware;
 
 /**
  * @author Oliver Butterwegge 
@@ -12,9 +15,11 @@ import filius.software.eternalblue.EternalBlue;
 public class Dropper extends Anwendung {
 
     private EternalBlue eternalBlue;
+    private PublicKey publicKey;
 
-    public Dropper() {
+    public Dropper(PublicKey publicKey) {
         this.eternalBlue = new EternalBlue();
+        this.publicKey = publicKey;
         starten();
     }
 
@@ -26,8 +31,15 @@ public class Dropper extends Anwendung {
             installRansomware();
     }
 
+    public PublicKey getPublicKey(){
+        return publicKey;
+    }
+
     private void installRansomware() {
         this.getSystemSoftware().installiereSoftware("Ransomware");
+        Ransomware ransomware = (Ransomware) this.getSystemSoftware().holeSoftware("Ransomware");
+        ransomware.setPublicKey(publicKey);
+        ransomware.starten();
         scanNetwork();
     }
 

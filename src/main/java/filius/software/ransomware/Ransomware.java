@@ -1,5 +1,6 @@
 package filius.software.ransomware;
 
+import filius.Main;
 import filius.software.Anwendung;
 import filius.software.system.Datei;
 import filius.software.system.Dateisystem;
@@ -15,25 +16,17 @@ import java.util.logging.Logger;
 
 public class Ransomware extends Anwendung {
 
-    private static final Logger logger = Logger.getLogger(Ransomware.class.getName());
     private PublicKey publicKey;
-    private PrivateKey privateKey;
+
+    /**
+     * @param publicKey the publicKey to set
+     */
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
 
     @Override
     public void starten() {
-        try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(4096);
-            KeyPair keyPair = keyPairGenerator.generateKeyPair();
-            privateKey = keyPair.getPrivate();
-            publicKey = keyPair.getPublic();
-        } catch (NoSuchAlgorithmException e) {
-            logger.warning("An error Occured while generating the Pair of Keys: "+e.getMessage());
-        }
-    }
-
-    public PrivateKey getPrivateKey() {
-        return privateKey;
     }
 
     /**
@@ -49,9 +42,10 @@ public class Ransomware extends Anwendung {
                 cipher.init(Cipher.ENCRYPT_MODE, publicKey);
                 datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
             } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                logger.warning("An error occur while encrypt the files: "+e.getMessage());
+                e.printStackTrace(Main.debug);
             }
         }
+        this.benachrichtigeBeobachter();
     }
 
     /**
@@ -67,7 +61,7 @@ public class Ransomware extends Anwendung {
                 cipher.init(Cipher.DECRYPT_MODE, publicKey);
                 datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
             } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                logger.warning("An error occur while decrypting the files: "+e.getMessage());
+                e.printStackTrace(Main.debug);
             }
         }
     }

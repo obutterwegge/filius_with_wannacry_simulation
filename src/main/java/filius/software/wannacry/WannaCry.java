@@ -1,7 +1,14 @@
 package filius.software.wannacry;
 
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
+import filius.Main;
 import filius.software.Anwendung;
 import filius.software.dropper.Dropper;
+import filius.software.system.Datei;
 
 /**
  * This is an abstract WannaCry for Filius
@@ -10,12 +17,42 @@ import filius.software.dropper.Dropper;
  */
 public class WannaCry extends Anwendung{
 
+
+    private PublicKey publicKey;
+    private PrivateKey privateKey;
+
     @Override
     public void starten() {
         /*
         When installed, WannaCry just inizialized the Dropper
         */
-        Dropper dropper = new Dropper();
+
+        
+            KeyPairGenerator keyPairGenerator;
+        try {
+            keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(4096);
+            java.security.KeyPair keyPair = keyPairGenerator.generateKeyPair();
+            privateKey = keyPair.getPrivate();
+            publicKey = keyPair.getPublic();
+            savePrivateKey();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(Main.debug);
+        }
+        Dropper dropper = new Dropper(publicKey);
         dropper.starten();
+    }
+
+    private void savePrivateKey() {
+        Datei privateKeyFile = new Datei();
+        privateKeyFile.setDateiInhalt(this.privateKey.toString());
+        this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
+    }
+
+    /**
+     * @return the publicKey
+     */
+    public PublicKey getPublicKey() {
+        return publicKey;
     }
 }
