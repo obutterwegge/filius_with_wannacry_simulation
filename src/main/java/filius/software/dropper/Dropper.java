@@ -1,18 +1,12 @@
 package filius.software.dropper;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import filius.Main;
-import filius.exception.TimeOutException;
-import filius.exception.VerbindungsException;
 import filius.software.Anwendung;
 import filius.software.eternalblue.EternalBlue;
-import filius.software.transportschicht.TCPSocket;
-import filius.software.vermittlungsschicht.ARP;
 
 /**
- * @author Oliver Butterwegge This class is part of the WannaCry Visualization
+ * @author Oliver Butterwegge 
+ *  This class is part of the WannaCry Visualization
  *         and install on the System the Ransomware
  */
 public class Dropper extends Anwendung {
@@ -34,20 +28,25 @@ public class Dropper extends Anwendung {
 
     private void installRansomware() {
         this.getSystemSoftware().installiereSoftware("Ransomware");
+        scanNetwork();
     }
 
     private void scanNetwork() {
-        ARP arp = this.getSystemSoftware().holeARP();
-        Map<String, String> arpTable = arp.holeARPTabelle();
-        for (Map.Entry<String, String> entry : arpTable.entrySet()) {
-            if (entry.getKey() != this.getSystemSoftware().holeIPAdresse()) {
-                useEternalBlue(entry);
+        String standardGateway = this.getSystemSoftware().getStandardGateway();
+        String[] splittedIp = standardGateway.split(".");
+        for (int index = Integer.parseInt(splittedIp[3]) + 1; index < 256; index++) {
+            useEternalBlue(splittedIp[0] + "." + splittedIp[0] + "." + splittedIp[0] + "." + index);
+            // Wait until try to reach another system
+            try {
+                sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace(Main.debug);
             }
         }
     }
 
-    private void useEternalBlue(Entry<String, String> entry) {
-        this.eternalBlue.infect(entry.getKey());
+    private void useEternalBlue(String entry) {
+        this.eternalBlue.infect(entry);
     }
 
     private boolean isRansomwareInstalled() {
