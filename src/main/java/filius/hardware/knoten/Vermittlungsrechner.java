@@ -27,6 +27,7 @@
 package filius.hardware.knoten;
 
 import filius.Main;
+import filius.exception.VerbindungsException;
 import filius.rahmenprogramm.I18n;
 import filius.software.system.VermittlungsrechnerBetriebssystem;
 
@@ -45,7 +46,11 @@ public class Vermittlungsrechner extends InternetKnoten implements I18n {
                 + " (Vermittlungsrechner), constr: Vermittlungsrechner()");
 
         this.setzeAnzahlAnschluesse(1);
-        this.setSystemSoftware(new VermittlungsrechnerBetriebssystem());
+        try {
+            this.setSystemSoftware(new VermittlungsrechnerBetriebssystem());
+        } catch (VerbindungsException e) {
+            e.printStackTrace(Main.debug);
+        }
         getSystemSoftware().setKnoten(this);
         this.setName(TYPE);
     }

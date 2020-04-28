@@ -13,6 +13,7 @@ import java.util.Observable;
  */
 public class GUIApplicationRansomware extends GUIApplicationWindow {
 
+    private static final long serialVersionUID = 1L;
     private JLabel lockImg;
     private JLabel raiseLabel;
     private JLabel endLabel;
@@ -20,7 +21,6 @@ public class GUIApplicationRansomware extends GUIApplicationWindow {
     private JButton decryptButton;
     private JTextField privateKeyField;
     private JTextArea InformationField;
-    private 
 
     GUIApplicationRansomware(GUIDesktopPanel desktop, String appKlasse) {
         super(desktop, appKlasse);

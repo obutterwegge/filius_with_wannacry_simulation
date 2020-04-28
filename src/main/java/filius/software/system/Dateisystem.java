@@ -35,6 +35,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import filius.Main;
+import filius.software.clientserver.SMBServer;
 
 /**
  * Die Klasse Dateisystem dient dazu, die Funktionalitaet des Dateisystems eines Betriebssystems nachzubilden. Das

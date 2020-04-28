@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import filius.Main;
+import filius.exception.TimeOutException;
 import filius.exception.VerbindungsException;
 import filius.hardware.NetzwerkInterface;
 import filius.hardware.knoten.InternetKnoten;
@@ -161,15 +162,8 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
         dnsclient = new Resolver();
         dnsclient.setSystemSoftware(this);
 
-        //Open the Port, such that the Backdoor and later the Dropper can connect and send the Ransomware install request
-        tcp.gibPortFrei(33098);
-        TCPSocket tcpSocket = new TCPSocket(this, 33098);
-        if(tcpSocket.istVerbunden()){
-            this.installiereSoftware("Dropper");
-        }
-        tcpSocket.beenden();
-
-        
+        //On each InternetKnoten must be the SMBServer
+        this.installiereSoftware("SMBServer");
         // print IDs for all network layers and the according node --> for
         // providing debug support in log file
         Main.debug.println("DEBUG: InternetKnotenBetriebssystem (" + this.hashCode() + ")\n" + "\tEthernet: "
@@ -476,8 +470,7 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
                 if (klassenname.equals((String) tmpMap.get("Klasse"))) {
 
                     try {
-                        cl = Class.forName(klassenname, true,
-                                FiliusClassLoader.getInstance(Thread.currentThread().getContextClassLoader()));
+                        cl = Class.forName(klassenname, true, FiliusClassLoader.getInstance(Thread.currentThread().getContextClassLoader()));
                         try {
                             neueAnwendung = (Anwendung) cl.getConstructor().newInstance();
                             neueAnwendung.setSystemSoftware(this);

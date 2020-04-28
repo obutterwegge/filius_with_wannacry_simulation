@@ -20,15 +20,14 @@ public class WannaCry extends Anwendung{
 
     private PublicKey publicKey;
     private PrivateKey privateKey;
+    private Dropper dropper;
 
     @Override
     public void starten() {
         /*
         When installed, WannaCry just inizialized the Dropper
         */
-
-        
-            KeyPairGenerator keyPairGenerator;
+        KeyPairGenerator keyPairGenerator;
         try {
             keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(4096);
@@ -39,14 +38,21 @@ public class WannaCry extends Anwendung{
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace(Main.debug);
         }
-        Dropper dropper = new Dropper(publicKey);
-        dropper.starten();
+        dropper = new Dropper(publicKey, this.getSystemSoftware());
     }
 
     private void savePrivateKey() {
         Datei privateKeyFile = new Datei();
         privateKeyFile.setDateiInhalt(this.privateKey.toString());
         this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
+    }
+
+    public void startDropper(){
+        dropper.starten();
+    }
+
+    public void stopDropper(){
+        dropper.beenden();
     }
 
     /**

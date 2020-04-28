@@ -1,6 +1,7 @@
 package filius.software.ransomware;
 
 import filius.Main;
+import filius.gui.anwendungssicht.GUIApplicationRansomware;
 import filius.software.Anwendung;
 import filius.software.system.Datei;
 import filius.software.system.Dateisystem;
@@ -12,12 +13,14 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 public class Ransomware extends Anwendung {
 
     private PublicKey publicKey;
 
+    public Ransomware(){
+        super();
+    }
     /**
      * @param publicKey the publicKey to set
      */
@@ -27,6 +30,7 @@ public class Ransomware extends Anwendung {
 
     @Override
     public void starten() {
+        encryptData();
     }
 
     /**

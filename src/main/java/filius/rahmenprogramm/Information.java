@@ -53,8 +53,6 @@ import filius.Main;
 import filius.gui.GUIContainer;
 import filius.gui.anwendungssicht.GUIDesktopWindow;
 import filius.hardware.Verbindung;
-import jdk.internal.jline.internal.Log;
-import jdk.jfr.internal.LogLevel;
 
 /**
  * In dieser Klasse werden die Verwaltungs-Informationen des Rahmenprogramms verwaltet, die unabhaengig von einem

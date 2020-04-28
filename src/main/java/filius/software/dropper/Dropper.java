@@ -1,11 +1,14 @@
 package filius.software.dropper;
 
 import java.security.PublicKey;
+import java.util.HashMap;
 
 import filius.Main;
 import filius.software.Anwendung;
 import filius.software.eternalblue.EternalBlue;
 import filius.software.ransomware.Ransomware;
+import filius.software.system.InternetKnotenBetriebssystem;
+import filius.software.system.SystemSoftware;
 
 /**
  * @author Oliver Butterwegge 
@@ -14,12 +17,14 @@ import filius.software.ransomware.Ransomware;
  */
 public class Dropper extends Anwendung {
 
-    private EternalBlue eternalBlue;
-    private PublicKey publicKey;
+    private final EternalBlue eternalBlue;
+    private final PublicKey publicKey;
 
-    public Dropper(PublicKey publicKey) {
+    public Dropper(PublicKey publicKey, InternetKnotenBetriebssystem internetKnotenBetriebssystem) {
+        super();
         this.eternalBlue = new EternalBlue();
         this.publicKey = publicKey;
+        this.setSystemSoftware(internetKnotenBetriebssystem);
         starten();
     }
 
@@ -36,10 +41,10 @@ public class Dropper extends Anwendung {
     }
 
     private void installRansomware() {
-        this.getSystemSoftware().installiereSoftware("Ransomware");
-        Ransomware ransomware = (Ransomware) this.getSystemSoftware().holeSoftware("Ransomware");
+        this.getSystemSoftware().installiereSoftware("filius.software.ransomware.Ransomware");
+        Ransomware ransomware = (Ransomware) this.getSystemSoftware().holeSoftware("filius.software.ransomware.Ransomware");
         ransomware.setPublicKey(publicKey);
-        ransomware.starten();
+        //ransomware.starten();
         scanNetwork();
     }
 
@@ -62,6 +67,14 @@ public class Dropper extends Anwendung {
     }
 
     private boolean isRansomwareInstalled() {
-        return this.getSystemSoftware().getInstallierteAnwendungen().containsKey("Ransomware");
+        SystemSoftware systemSoftware = this.getSystemSoftware();
+        HashMap<String, Anwendung> installierteAnwendungen = this.getSystemSoftware().getInstallierteAnwendungen();
+        for (Anwendung anwendung :
+                installierteAnwendungen.values()) {
+            if (anwendung instanceof Ransomware)
+                return true;
+        }
+        return false;
+
     }
 }

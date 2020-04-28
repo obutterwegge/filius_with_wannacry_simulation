@@ -1,9 +1,9 @@
 /*
  ** This file is part of Filius, a network construction and simulation software.
- ** 
+ **
  ** Originally created at the University of Siegen, Institute "Didactics of
  ** Informatics and E-Learning" by a students' project group:
- **     members (2006-2007): 
+ **     members (2006-2007):
  **         André Asschoff, Johannes Bade, Carsten Dittich, Thomas Gerding,
  **         Nadja Haßler, Ernst Johannes Klebert, Michell Weyer
  **     supervisors:
@@ -14,12 +14,12 @@
  ** it under the terms of the GNU General Public License as published by
  ** the Free Software Foundation, either version 2 of the License, or
  ** (at your option) version 3.
- ** 
+ **
  ** Filius is distributed in the hope that it will be useful,
  ** but WITHOUT ANY WARRANTY; without even the implied
  ** warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  ** PURPOSE. See the GNU General Public License for more details.
- ** 
+ **
  ** You should have received a copy of the GNU General Public License
  ** along with Filius.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -34,6 +34,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.NoSuchFileException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -47,10 +49,9 @@ import filius.rahmenprogramm.ResourceUtil;
 
 public class GUIHilfe implements I18n {
 
-    private JDialog jf;
+    private final JDialog jf;
     private static GUIHilfe ref = null;
-    private JScrollPane spHtmlScroller;
-    private JEditorPane epHtml;
+    private final JEditorPane epHtml;
 
     private GUIHilfe() {
         JFrame hauptFrame = JMainFrame.getJMainFrame();
@@ -61,7 +62,7 @@ public class GUIHilfe implements I18n {
         epHtml = new JEditorPane("text/html;charset=UTF-8", null);
         epHtml.setText(messages.getString("guihilfe_msg2"));
         laden("entwurfsmodus");
-        spHtmlScroller = new JScrollPane(epHtml);
+        JScrollPane spHtmlScroller = new JScrollPane(epHtml);
 
         jf.getContentPane().add(spHtmlScroller, BorderLayout.CENTER);
     }
@@ -107,25 +108,29 @@ public class GUIHilfe implements I18n {
         } else {
             file = ResourceUtil.getResourceFile("hilfe/" + messages.getString("hilfedatei_simulation"));
         }
-        String gfxPath = "file:" + file.getParentFile().getAbsolutePath() + "/gfx/";
-        if (File.separator.equals("\\")) {
-            gfxPath = gfxPath.replace('\\', '/');
+        if (file == null){
+            System.out.println("The Hilfe folder seems missing");
+            throw new NullPointerException();
         }
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8")))) {
-            StringBuffer sb = new StringBuffer();
-            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-                sb.append(line);
+        else {
+            String gfxPath = "file:" + file.getParentFile().getAbsolutePath() + "/gfx/";
+            if (File.separator.equals("\\")) {
+                gfxPath = gfxPath.replace('\\', '/');
             }
-            String newText = sb.toString();
-            newText = newText.replaceAll("hilfe/gfx/", gfxPath);
-            System.out.println(newText);
-            epHtml.read(new java.io.StringReader(newText), null);
-            epHtml.setCaretPosition(0);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace(Main.debug);
-        } catch (IOException e) {
-            e.printStackTrace(Main.debug);
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                StringBuilder sb = new StringBuilder();
+                for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                    sb.append(line);
+                }
+                String newText = sb.toString();
+                newText = newText.replaceAll("hilfe/gfx/", gfxPath);
+                System.out.println(newText);
+                epHtml.read(new java.io.StringReader(newText), null);
+                epHtml.setCaretPosition(0);
+            } catch (IOException e) {
+                e.printStackTrace(Main.debug);
+            }
         }
     }
 }

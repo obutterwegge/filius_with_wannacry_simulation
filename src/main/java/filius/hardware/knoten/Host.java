@@ -26,6 +26,7 @@
 package filius.hardware.knoten;
 
 import filius.Main;
+import filius.exception.VerbindungsException;
 import filius.hardware.NetzwerkInterface;
 import filius.software.system.Betriebssystem;
 
@@ -46,7 +47,11 @@ public abstract class Host extends InternetKnoten {
 		Main.debug.println("INVOKED-2 (" + this.hashCode() + ") " + getClass() + " (Host), constr: Host()");
 
 		this.setzeAnzahlAnschluesse(1);
-		this.setSystemSoftware(new Betriebssystem());
+		try {
+			this.setSystemSoftware(new Betriebssystem());
+		} catch (VerbindungsException e) {
+			e.printStackTrace(Main.debug);
+		}
 		getSystemSoftware().setKnoten(this);
 		Main.debug.println("DEBUG:  Host " + this.hashCode() + " has OS " + getSystemSoftware().hashCode());
 	}

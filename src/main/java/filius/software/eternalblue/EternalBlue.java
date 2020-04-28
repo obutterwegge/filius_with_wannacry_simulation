@@ -17,10 +17,8 @@ public class EternalBlue extends Anwendung {
             TCPSocket tcpSocket = new TCPSocket(this.getSystemSoftware(), ipAdress, 30038);
             if (tcpSocket.istVerbunden())
                 tcpSocket.senden("install");
-        } catch (VerbindungsException e) {
-            e.printStackTrace(Main.debug);
-        } catch (TimeOutException e) {
+        } catch (VerbindungsException | TimeOutException e) {
             e.printStackTrace(Main.debug);
         }
-	}
+    }
 }
