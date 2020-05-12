@@ -12,4 +12,5 @@ Text editor;filius.software.lokal.TextEditor;filius.gui.anwendungssicht.GUIAppli
 Webbrowser;filius.software.www.WebBrowser;filius.gui.anwendungssicht.GUIApplicationWebBrowserWindow;gfx/desktop/icon_browser.png
 Webserver;filius.software.www.WebServer;filius.gui.anwendungssicht.GUIApplicationWebServerWindow;gfx/desktop/icon_webserver.png
 Ransomware;filius.software.ransomware.Ransomware;filius.gui.anwendungssicht.GUIApplicationRansomware;gfx/desktop/icon_terminal.png
-WannaCry;filius.software.wannacry.WannaCry;filius.giu.anwendungssicht.GUIApplicationWannaCry;gfx/desktop/icon_terminal.png
+WannaCry;filius.software.wannacry.WannaCry;filius.gui.anwendungssicht.GUIApplicationWannaCry;gfx/desktop/icon_terminal.png
+SMBServer;filius.software.clientserver.SMBServer;filius.gui.anwendungssicht.GUIApplicationSMBServer;gfx/desktop/icon_browser.png

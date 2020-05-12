@@ -27,6 +27,7 @@ package filius.software.system;
 
 import filius.Main;
 import filius.exception.VerbindungsException;
+import filius.software.clientserver.SMBServer;
 import filius.software.dhcp.DHCPClient;
 import filius.software.dhcp.DHCPServer;
 import filius.software.rip.RIPTable;
@@ -52,8 +53,7 @@ public class Betriebssystem extends InternetKnotenBetriebssystem {
     /**
      * der DHCP-Client, der zur Konfiguration der Netzwerkkarte genutzt wird, wenn
      * die Konfiguration mit DHCP erfolgen soll
-     * 
-     * @see dhcpKonfiguration
+     *
      */
     private DHCPClient dhcpClient;
 
@@ -69,6 +69,14 @@ public class Betriebssystem extends InternetKnotenBetriebssystem {
 
         dhcpServer = new DHCPServer();
         dhcpServer.setSystemSoftware(this);
+        Datei datei = new Datei();
+        datei.setDateiInhalt("Dies ist ein Test");
+        datei.setName("Test.txt");
+        datei.setDateiTyp("txt");
+        getDateisystem().speicherDatei("root", datei);
+        installiereSoftware("filius.software.lokal.FileExplorer");
+        installiereSoftware("filius.software.lokal.TextEditor");
+        installiereSoftware("filius.software.clientserver.SMBServer");
     }
 
     @Override

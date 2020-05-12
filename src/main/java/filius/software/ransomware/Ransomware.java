@@ -1,7 +1,6 @@
 package filius.software.ransomware;
 
 import filius.Main;
-import filius.gui.anwendungssicht.GUIApplicationRansomware;
 import filius.software.Anwendung;
 import filius.software.system.Datei;
 import filius.software.system.Dateisystem;
@@ -10,8 +9,12 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.security.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.LinkedList;
 
 public class Ransomware extends Anwendung {
@@ -38,15 +41,19 @@ public class Ransomware extends Anwendung {
      */
     public void encryptData() {
         Dateisystem dateisystem = getSystemSoftware().getDateisystem();
-        LinkedList<Datei> linkedList = dateisystem.dateiSuche("", "*");
-        for (Datei datei :
-                linkedList) {
-            try {
-                Cipher cipher = Cipher.getInstance("RSA");
-                cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-                datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
-            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                e.printStackTrace(Main.debug);
+        for (Enumeration enumeration = dateisystem.getRoot().children(); enumeration.hasMoreElements();) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
+            if (node.getUserObject() instanceof Datei) {
+                Datei tmpDatei = (Datei) node.getUserObject();
+                if (!"PrivateKey.txt".equals(tmpDatei.getName())){
+                    try {
+                        Cipher cipher = Cipher.getInstance("RSA");
+                        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+                        tmpDatei.setDateiInhalt(Arrays.toString(cipher.doFinal(tmpDatei.getDateiInhalt().getBytes())));
+                    } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException exception) {
+                        exception.printStackTrace(Main.debug);
+                    }
+                }
             }
         }
         this.benachrichtigeBeobachter();
@@ -60,12 +67,14 @@ public class Ransomware extends Anwendung {
         LinkedList<Datei> linkedList = dateisystem.dateiSuche("", "*");
         for (Datei datei :
                 linkedList) {
-            try {
-                Cipher cipher = Cipher.getInstance("RSA");
-                cipher.init(Cipher.DECRYPT_MODE, publicKey);
-                datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
-            } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-                e.printStackTrace(Main.debug);
+            if (!"PrivateKey.txt".equals(datei.getName())) {
+                try {
+                    Cipher cipher = Cipher.getInstance("RSA");
+                    cipher.init(Cipher.DECRYPT_MODE, publicKey);
+                    datei.setDateiInhalt(Arrays.toString(cipher.doFinal(datei.getDateiInhalt().getBytes())));
+                } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+                    e.printStackTrace(Main.debug);
+                }
             }
         }
     }

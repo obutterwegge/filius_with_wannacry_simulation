@@ -140,7 +140,7 @@ public class GUIDesktopPanel extends JBackgroundPanel implements I18n, Observer 
         List<Map<String, String>> softwareList = null;
         String softwareKlasse, guiKlassenName;
         HashMap<?, ?> tmpMap;
-        Class<?> cl = null;
+        Class<?> aClass = null;
         GUIApplicationWindow tempWindow;
 
         try {
@@ -172,7 +172,7 @@ public class GUIDesktopPanel extends JBackgroundPanel implements I18n, Observer 
                     guiKlassenName = (String) tmpMap.get("GUI-Klasse");
 
                     try {
-                        cl = Class.forName(guiKlassenName, true,
+                        aClass = Class.forName(guiKlassenName, true,
                                 FiliusClassLoader.getInstance(Thread.currentThread().getContextClassLoader()));
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace(Main.debug);
@@ -180,8 +180,8 @@ public class GUIDesktopPanel extends JBackgroundPanel implements I18n, Observer 
 
                     try {
 
-                        if (cl != null) {
-                            tempWindow = (GUIApplicationWindow) cl.getConstructor(GUIDesktopPanel.class, String.class)
+                        if (aClass != null) {
+                            tempWindow = (GUIApplicationWindow) aClass.getConstructor(GUIDesktopPanel.class, String.class)
                                     .newInstance(this, softwareKlasse);
 
                             tempWindow.setVisible(false);

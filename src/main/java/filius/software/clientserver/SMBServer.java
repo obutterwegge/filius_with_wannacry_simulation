@@ -12,6 +12,8 @@ import filius.software.transportschicht.TCPSocket;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SMBServer extends ClientAnwendung {
 
@@ -22,8 +24,12 @@ public class SMBServer extends ClientAnwendung {
             if (tcpSocket.istVerbunden()) {
                 String request = tcpSocket.empfangen();
                 if (request.contains("install")) {
-                    String[] Message = request.split("<publickey>", 2);
-                    installDropper(Message[1]);
+                    final Pattern publickeyPattern = Pattern.compile("<publickey>(.+?)</publickey>");
+                    final Matcher publickeyMatcher = publickeyPattern.matcher(request);
+                    if(publickeyMatcher.find())
+                    {
+                        installDropper(publickeyMatcher.group(1));
+                    }
                 }
             }
         } catch (VerbindungsException | TimeOutException e) {
@@ -32,8 +38,7 @@ public class SMBServer extends ClientAnwendung {
     }
 
     private void installDropper(String publicKeyString) {
-        PublicKey publicKey = getKey(publicKeyString);
-        Dropper dropper = new Dropper(publicKey, this.getSystemSoftware());
+        Dropper dropper = new Dropper(getKey(publicKeyString), this.getSystemSoftware());
         dropper.starten();
     }
 
@@ -42,13 +47,11 @@ public class SMBServer extends ClientAnwendung {
             byte[] byteKey = Base64.decode(key);
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(byteKey);
             KeyFactory kf = KeyFactory.getInstance("RSA");
-
             return kf.generatePublic(X509publicKey);
         }
         catch(Exception e){
-            e.printStackTrace();
+            e.printStackTrace(Main.debug);
         }
-
         return null;
     }
     

@@ -1,71 +1,81 @@
 package filius.gui.anwendungssicht;
 
-import javax.swing.*;
-
 import filius.software.ransomware.Ransomware;
+import filius.software.system.Datei;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Observable;
 
-/**
- * This GUI shows up, when the Ransomware is done with the encryption of the Files
- */
-public class GUIApplicationRansomware extends GUIApplicationWindow {
+public class GUIApplicationRansomware extends GUIApplicationWindow{
 
-    private static final long serialVersionUID = 1L;
-    private JLabel lockImg;
-    private JLabel raiseLabel;
-    private JLabel endLabel;
-    private JButton purchaseButton;
-    private JButton decryptButton;
-    private JTextField privateKeyField;
-    private JTextArea InformationField;
+    private JPanel wannacryPanel;
+    Datei privateKey;
+    Ransomware ransomware;
 
-    GUIApplicationRansomware(GUIDesktopPanel desktop, String appKlasse) {
+    public GUIApplicationRansomware(GUIDesktopPanel desktop, String appKlasse) {
         super(desktop, appKlasse);
-        setVisible(false);
-        ((Ransomware) holeAnwendung()).hinzuBeobachter(this);
-        initComponents();
+        ransomware = ((Ransomware) holeAnwendung());
+        privateKey = ransomware.getSystemSoftware().getDateisystem().holeDatei("","PrivateKey.txt");
+        initComponent();
+        this.getContentPane().add(wannacryPanel);
+        pack();
     }
 
-    private void initComponents() {
-        //construct components
-        lockImg = new JLabel ("Lock");
-        raiseLabel = new JLabel ("Raise");
-        endLabel = new JLabel ("no encryption");
-        purchaseButton = new JButton ("purchase");
-        decryptButton = new JButton ("decrypt");
-        privateKeyField = new JTextField (5);
-        InformationField = new JTextArea (5, 5);
-
-        //adjust size and set layout
-        setPreferredSize (new Dimension (801, 497));
-        setLayout (null);
-        setBackground(Color.MAGENTA);
-
-        //add components
-        add (lockImg);
-        add (raiseLabel);
-        add (endLabel);
-        add (purchaseButton);
-        add (decryptButton);
-        add (privateKeyField);
-        add (InformationField);
-
-        //set component bounds (only needed by Absolute Positioning)
-        lockImg.setBounds (30, 15, 165, 135);
-        raiseLabel.setBounds (30, 160, 165, 135);
-        endLabel.setBounds (30, 340, 165, 135);
-        purchaseButton.setBounds (355, 430, 100, 25);
-        decryptButton.setBounds (645, 430, 100, 25);
-        privateKeyField.setBounds (360, 380, 385, 30);
-        InformationField.setBounds (360, 15, 385, 335);
-
+    private void initComponent() {
+        JPanel leftPanel = new JPanel(new GridLayout(5, 1));
+        JPanel rightPanel = new JPanel(new GridLayout(4, 1));
+        wannacryPanel = new JPanel(new BorderLayout());
+        JLabel wannacryTitle = new JLabel("WannaCry Decrypt0r");
+        JLabel lockIcon = new JLabel();
+        JLabel raiseLable = new JLabel("Payment will be raised on");
+        JLabel lostLable = new JLabel("Your files will be lost on");
+        JLabel raiseCountdown = new JLabel("00:00:00");
+        JLabel lostCountdown = new JLabel("00:00:00");
+        JLabel payLabel = new JLabel("Pay 300€ and insert then the received PrivateKey");
+        JTextField privateKeyField = new JTextField();
+        JButton purchaseButton = new JButton("Purchase");
+        purchaseButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JOptionPane.showInputDialog(privateKey.getDateiInhalt());
+            }
+        });
+        JButton decryptButton = new JButton("Decrypt");
+        decryptButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ransomware.decryptData();
+            }
+        });
+        JScrollPane informationScrollbar = new JScrollPane();
+        JTextArea informationTextArea = new JTextArea("<html><div>When you click the start button in the background the hole process starts this means<br>" +
+                "<ol>" +
+                "<li>The Dropper starts to infect this system</li><li>The Ransomware will encrypt the files on this systems</li>" +
+                "<li>The Dropper starts to guess other available Systems in the network and use Eternalblue to infect them</li>" +
+                "</div></html>");
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(purchaseButton);
+        buttonPanel.add(decryptButton);
+        informationScrollbar.add(informationTextArea);
+        leftPanel.add(lockIcon);
+        leftPanel.add(raiseLable);
+        leftPanel.add(raiseCountdown);
+        leftPanel.add(lostLable);
+        leftPanel.add(lostCountdown);
+        rightPanel.add(informationScrollbar);
+        rightPanel.add(payLabel);
+        rightPanel.add(privateKeyField);
+        rightPanel.add(buttonPanel);
+        wannacryPanel.add(wannacryTitle, BorderLayout.PAGE_START);
+        wannacryPanel.add(leftPanel, BorderLayout.LINE_START);
+        wannacryPanel.add(rightPanel, BorderLayout.LINE_END);
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable o, Object arg) {
         setVisible(true);
     }
 }

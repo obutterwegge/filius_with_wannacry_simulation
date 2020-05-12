@@ -1,14 +1,19 @@
 package filius.software.wannacry;
 
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import filius.Main;
 import filius.software.Anwendung;
 import filius.software.dropper.Dropper;
 import filius.software.system.Datei;
+import filius.software.system.Dateisystem;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * This is an abstract WannaCry for Filius
@@ -20,13 +25,9 @@ public class WannaCry extends Anwendung{
 
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private Dropper dropper;
 
     @Override
     public void starten() {
-        /*
-        When installed, WannaCry just inizialized the Dropper
-        */
         KeyPairGenerator keyPairGenerator;
         try {
             keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -38,21 +39,14 @@ public class WannaCry extends Anwendung{
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace(Main.debug);
         }
-        dropper = new Dropper(publicKey, this.getSystemSoftware());
     }
 
     private void savePrivateKey() {
         Datei privateKeyFile = new Datei();
         privateKeyFile.setDateiInhalt(this.privateKey.toString());
-        this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
-    }
-
-    public void startDropper(){
-        dropper.starten();
-    }
-
-    public void stopDropper(){
-        dropper.beenden();
+        privateKeyFile.setName("PrivateKey.txt");
+        if (!this.getSystemSoftware().getDateisystem().dateiVorhanden("", "PrivateKey.txt"))
+            this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
     }
 
     /**
@@ -60,5 +54,19 @@ public class WannaCry extends Anwendung{
      */
     public PublicKey getPublicKey() {
         return publicKey;
+    }
+
+
+    public boolean checkPrivateKey(String text) {
+        return privateKey.toString().equals(text);
+    }
+
+    public String getPrivateKey() {
+        return privateKey.toString();
+    }
+
+    public void starteWannaCryAttack(){
+        Dropper dropper = new Dropper(publicKey, this.getSystemSoftware());
+        dropper.starten();
     }
 }
