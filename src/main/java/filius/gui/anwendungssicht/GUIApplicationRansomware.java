@@ -47,7 +47,7 @@ public class GUIApplicationRansomware extends GUIApplicationWindow{
         decryptButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ransomware.decryptData();
+                ransomware.decryptDataAsyncrhon(privateKeyField.getText());
             }
         });
         JScrollPane informationScrollbar = new JScrollPane();

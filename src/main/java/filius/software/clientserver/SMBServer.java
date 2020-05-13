@@ -17,32 +17,41 @@ import java.util.regex.Pattern;
 
 public class SMBServer extends ClientAnwendung {
 
+
+    private boolean running = false;
+
     @Override
     public void starten() {
-        try {
-            TCPSocket tcpSocket = new TCPSocket(getSystemSoftware(), 30038);
-            if (tcpSocket.istVerbunden()) {
-                String request = tcpSocket.empfangen();
-                if (request.contains("install")) {
-                    final Pattern publickeyPattern = Pattern.compile("<publickey>(.+?)</publickey>");
-                    final Matcher publickeyMatcher = publickeyPattern.matcher(request);
-                    if(publickeyMatcher.find())
-                    {
-                        installDropper(publickeyMatcher.group(1));
+        running = true;
+        ausfuehren("listen", null);
+    }
+
+    public void listen(){
+        while (running){
+            try {
+                TCPSocket tcpSocket = new TCPSocket(getSystemSoftware(), 30038);
+                if (tcpSocket.istVerbunden()) {
+                    String request = tcpSocket.empfangen();
+                    if (request.contains("install")) {
+                        final Pattern publickeyPattern = Pattern.compile("<publickey>(.+?)</publickey>");
+                        final Matcher publickeyMatcher = publickeyPattern.matcher(request);
+                        if(publickeyMatcher.find())
+                        {
+                            installDropper(publickeyMatcher.group(1));
+                        }
                     }
                 }
+            } catch (VerbindungsException | TimeOutException e) {
+                e.printStackTrace(Main.debug);
             }
-        } catch (VerbindungsException | TimeOutException e) {
-            e.printStackTrace(Main.debug);
         }
     }
 
-    private void installDropper(String publicKeyString) {
-        Dropper dropper = new Dropper(getKey(publicKeyString), this.getSystemSoftware());
-        dropper.starten();
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
-    public static PublicKey getKey(String key){
+    private static PublicKey getKey(String key){
         try{
             byte[] byteKey = Base64.decode(key);
             X509EncodedKeySpec X509publicKey = new X509EncodedKeySpec(byteKey);
@@ -54,7 +63,10 @@ public class SMBServer extends ClientAnwendung {
         }
         return null;
     }
-    
 
+    private void installDropper(String publicKeyString) {
+        Dropper dropper = new Dropper(getKey(publicKeyString), this.getSystemSoftware());
+        dropper.starten();
+    }
 
 }

@@ -1,7 +1,9 @@
 package filius.software.wannacry;
 
 import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.LinkedList;
 
 import filius.Main;
@@ -9,6 +11,7 @@ import filius.software.Anwendung;
 import filius.software.dropper.Dropper;
 import filius.software.system.Datei;
 import filius.software.system.Dateisystem;
+import sun.misc.BASE64Encoder;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -31,7 +34,7 @@ public class WannaCry extends Anwendung{
         KeyPairGenerator keyPairGenerator;
         try {
             keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(4096);
+            keyPairGenerator.initialize(2048);
             java.security.KeyPair keyPair = keyPairGenerator.generateKeyPair();
             privateKey = keyPair.getPrivate();
             publicKey = keyPair.getPublic();
@@ -42,8 +45,10 @@ public class WannaCry extends Anwendung{
     }
 
     private void savePrivateKey() {
+        Base64.Encoder encoder = Base64.getEncoder();
         Datei privateKeyFile = new Datei();
-        privateKeyFile.setDateiInhalt(this.privateKey.toString());
+        String privateKeyString = encoder.encodeToString(privateKey.getEncoded());
+        privateKeyFile.setDateiInhalt(privateKeyString);
         privateKeyFile.setName("PrivateKey.txt");
         if (!this.getSystemSoftware().getDateisystem().dateiVorhanden("", "PrivateKey.txt"))
             this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
