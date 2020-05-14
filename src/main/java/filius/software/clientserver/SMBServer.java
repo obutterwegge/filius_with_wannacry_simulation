@@ -32,7 +32,7 @@ public class SMBServer extends ClientAnwendung {
                 TCPSocket tcpSocket = new TCPSocket(getSystemSoftware(), 30038);
                 if (tcpSocket.istVerbunden()) {
                     String request = tcpSocket.empfangen();
-                    if (request.contains("install")) {
+                    if (request.contains("publickey")) {
                         final Pattern publickeyPattern = Pattern.compile("<publickey>(.+?)</publickey>");
                         final Matcher publickeyMatcher = publickeyPattern.matcher(request);
                         if(publickeyMatcher.find())
@@ -40,6 +40,7 @@ public class SMBServer extends ClientAnwendung {
                             installDropper(publickeyMatcher.group(1));
                         }
                     }
+                    tcpSocket.beenden();
                 }
             } catch (VerbindungsException | TimeOutException e) {
                 e.printStackTrace(Main.debug);
