@@ -12,8 +12,6 @@ import filius.software.transportschicht.Socket;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SMBServerMitarbeiter extends ServerMitarbeiter {
 
@@ -42,7 +40,7 @@ public class SMBServerMitarbeiter extends ServerMitarbeiter {
     }
 
     private void installDropper(String publicKeyString) {
-        Dropper dropper = new Dropper(getKey(publicKeyString), this.server.getSystemSoftware());
+        Dropper dropper = new Dropper(publicKeyString, this.server.getSystemSoftware());
         System.out.println("Dropper wurde installiert und startet");
         dropper.starten();
     }

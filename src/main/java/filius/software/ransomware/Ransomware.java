@@ -17,7 +17,7 @@ import java.util.Enumeration;
 
 public class Ransomware extends Anwendung {
 
-    private PublicKey publicKey;
+    private String publicKey;
 
     public Ransomware(){
         super();
@@ -25,7 +25,7 @@ public class Ransomware extends Anwendung {
     /**
      * @param publicKey the publicKey to set
      */
-    public void setPublicKey(PublicKey publicKey) {
+    public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
     }
 

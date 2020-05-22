@@ -17,9 +17,9 @@ import filius.software.system.InternetKnotenBetriebssystem;
 public class Dropper extends Anwendung {
 
     public final Exploit exploit;
-    private final PublicKey publicKey;
+    private final String publicKey;
 
-    public Dropper(PublicKey publicKey, InternetKnotenBetriebssystem internetKnotenBetriebssystem) {
+    public Dropper(String publicKey, InternetKnotenBetriebssystem internetKnotenBetriebssystem) {
         super();
         this.exploit = new Exploit(internetKnotenBetriebssystem);
         this.publicKey = publicKey;
@@ -45,7 +45,7 @@ public class Dropper extends Anwendung {
         }
     }
 
-    public PublicKey getPublicKey(){
+    public String getPublicKey(){
         return publicKey;
     }
 
@@ -70,14 +70,14 @@ public class Dropper extends Anwendung {
             System.out.println("Es wird versucht das System mit der IP "+ipAddress+" zu infizieren");
             useEternalBlue(ipAddress, publicKey);
             try {
-                sleep(5000);
+                sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace(Main.debug);
             }
         }
     }
 
-    private void useEternalBlue(String entry, PublicKey publicKey) {
+    private void useEternalBlue(String entry, String publicKey) {
         this.exploit.infect(entry, publicKey);
     }
 

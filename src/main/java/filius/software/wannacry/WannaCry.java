@@ -66,7 +66,7 @@ public class WannaCry extends Anwendung{
 
     public void starteWannaCryAttack(){
         System.out.println("Starte WannaCry Attack");
-        Dropper dropper = new Dropper(publicKey, this.getSystemSoftware());
+        Dropper dropper = new Dropper(publicKey.toString(), this.getSystemSoftware());
         dropper.starten();
     }
 }

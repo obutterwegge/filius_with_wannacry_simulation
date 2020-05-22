@@ -19,13 +19,13 @@ public class SMBClient extends ClientAnwendung {
         this.setSystemSoftware(internetKnotenBetriebssystem);
     }
 
-    public void sendMessage(String ipAddress, PublicKey publicKey) {
+    public void sendMessage(String ipAddress, String publicKey) {
         System.out.println("Der SMBClient versucht eine Nachricht an " + ipAddress + " zu senden");
         try {
             socket = new TCPSocket(this.getSystemSoftware(), ipAddress, 33099);
             Object[] args;
             args = new Object[1];
-            SMBMessage smbMessage = new SMBMessage(publicKey.toString());
+            SMBMessage smbMessage = new SMBMessage(publicKey);
             args[0] = smbMessage;
             ausfuehren("deliverMessage", args);
         } catch (VerbindungsException verbindungsException) {
