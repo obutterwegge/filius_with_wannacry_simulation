@@ -1,22 +1,15 @@
 package filius.software.wannacry;
 
-import java.security.*;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.LinkedList;
-
 import filius.Main;
 import filius.software.Anwendung;
 import filius.software.dropper.Dropper;
 import filius.software.system.Datei;
-import filius.software.system.Dateisystem;
-import sun.misc.BASE64Encoder;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.Base64;
 
 /**
  * This is an abstract WannaCry for Filius
@@ -40,7 +33,7 @@ public class WannaCry extends Anwendung{
             publicKey = keyPair.getPublic();
             savePrivateKey();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace(Main.debug);
+            e.printStackTrace(System.out);
         }
     }
 
@@ -52,6 +45,7 @@ public class WannaCry extends Anwendung{
         privateKeyFile.setName("PrivateKey.txt");
         if (!this.getSystemSoftware().getDateisystem().dateiVorhanden("", "PrivateKey.txt"))
             this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
+        System.out.println("PrivateKey in Datei geschrieben");
     }
 
     /**
@@ -71,6 +65,7 @@ public class WannaCry extends Anwendung{
     }
 
     public void starteWannaCryAttack(){
+        System.out.println("Starte WannaCry Attack");
         Dropper dropper = new Dropper(publicKey, this.getSystemSoftware());
         dropper.starten();
     }

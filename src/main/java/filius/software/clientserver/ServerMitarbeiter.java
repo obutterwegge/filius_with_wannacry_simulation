@@ -99,7 +99,7 @@ public abstract class ServerMitarbeiter extends Thread implements I18n {
                 if (socket.istVerbunden()) {
                     nachricht = socket.empfangen();
                 }
-
+                Main.debug.println("Folgende Nachricht ist eingetroffen "+nachricht);
                 if (nachricht != null) {
                     server.benachrichtigeBeobachter(">>" + nachricht);
                     verarbeiteNachricht(nachricht);

@@ -35,7 +35,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import filius.Main;
-import filius.software.clientserver.SMBServer;
+import filius.software.SMB.SMBServer;
+import filius.software.transportschicht.TCP;
+import filius.software.transportschicht.TransportProtokoll;
+import filius.software.vermittlungsschicht.IpPaket;
 
 /**
  * Die Klasse Dateisystem dient dazu, die Funktionalitaet des Dateisystems eines Betriebssystems nachzubilden. Das
@@ -74,8 +77,6 @@ public class Dateisystem implements Serializable {
         Main.debug.println("INVOKED (" + this.hashCode() + ") " + getClass() + " (Dateisystem), constr: Dateisystem()");
         root = new DefaultMutableTreeNode("root");
         arbeitsVerzeichnis = root;
-        // Here we simulate the SMB Exploit
-        SMBServer smbServer = new SMBServer();
     }
 
     private void openTCPPort() {

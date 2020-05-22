@@ -44,6 +44,7 @@ import filius.rahmenprogramm.EingabenUeberpruefung;
 import filius.rahmenprogramm.FiliusClassLoader;
 import filius.rahmenprogramm.Information;
 import filius.software.Anwendung;
+import filius.software.SMB.SMBServerAnwendung;
 import filius.software.dns.Resolver;
 import filius.software.netzzugangsschicht.Ethernet;
 import filius.software.netzzugangsschicht.EthernetThread;
@@ -163,7 +164,7 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
         dnsclient.setSystemSoftware(this);
 
         //On each InternetKnoten must be the SMBServer
-        this.installiereSoftware("SMBServer");
+        this.installiereSoftware("filius.software.SMB.SMBServerAnwendung");
         // print IDs for all network layers and the according node --> for
         // providing debug support in log file
         Main.debug.println("DEBUG: InternetKnotenBetriebssystem (" + this.hashCode() + ")\n" + "\tEthernet: "
@@ -291,6 +292,8 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
         printDebugInfo();
 
         for (Anwendung anwendung : installierteAnwendung.values()) {
+            if (anwendung instanceof SMBServerAnwendung)
+                ((SMBServerAnwendung) anwendung).setAktiv(true);
             if (anwendung != null) {
                 anwendung.starten();
             }

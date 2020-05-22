@@ -193,8 +193,6 @@ public class TCPSocket extends Socket implements Runnable {
      * Der Konstruktor ist <b> nicht blockierend</b>.
      * 
      * @param betriebssystem
-     * @param zielAdresse
-     * @param zielPort
      * @throws VerbindungsException
      */
     public TCPSocket(InternetKnotenBetriebssystem betriebssystem, int lokalerPort) throws VerbindungsException {
@@ -560,7 +558,7 @@ public class TCPSocket extends Socket implements Runnable {
             zeitpunkt = System.currentTimeMillis();
 
             if (zustand == ESTABLISHED && !beendet && puffer.size() >= 1) {
-                segment = (TcpSegment) puffer.getFirst();
+                segment = puffer.getFirst();
 
                 // waehrend des Empfangs werden keine ACK-Segmente
                 // verarbeitet. Diese werden nur beim Versenden von

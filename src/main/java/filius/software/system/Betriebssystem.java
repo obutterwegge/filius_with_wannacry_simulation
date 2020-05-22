@@ -27,7 +27,6 @@ package filius.software.system;
 
 import filius.Main;
 import filius.exception.VerbindungsException;
-import filius.software.clientserver.SMBServer;
 import filius.software.dhcp.DHCPClient;
 import filius.software.dhcp.DHCPServer;
 import filius.software.rip.RIPTable;
@@ -43,7 +42,6 @@ import filius.software.rip.RIPTable;
 public class Betriebssystem extends InternetKnotenBetriebssystem {
 
     private static final long serialVersionUID = 1L;
-
     /**
      * ob die Konfiguration der Netzwerkkarte mit DHCP erfolgt
      */
@@ -70,27 +68,15 @@ public class Betriebssystem extends InternetKnotenBetriebssystem {
         dhcpServer = new DHCPServer();
         dhcpServer.setSystemSoftware(this);
         createTestFiles();
-        installSMBServer();
-    }
-
-    private void installSMBServer() {
-        installiereSoftware("filius.software.clientserver.SMBServer");
-        SMBServer smbServer = (SMBServer)holeSoftware("filius.software.clientserver.SMBServer");
-        smbServer.starten();
     }
 
     private void createTestFiles() {
         for (int i = 0; i < 100; i++){
-            int foldercounter = 0;
-            if (i % 10 == 0){
-                foldercounter++;
-                getDateisystem().erstelleVerzeichnis("root", "folder"+foldercounter);
-            }
             Datei datei = new Datei();
             datei.setDateiInhalt("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
             datei.setName("Test"+i+".txt");
             datei.setDateiTyp("txt");
-            getDateisystem().speicherDatei("folder"+foldercounter, datei);
+            getDateisystem().speicherDatei("", datei);
         }
     }
 

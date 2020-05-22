@@ -224,6 +224,7 @@ public abstract class Anwendung extends Thread {
 
                             klasse = null;
                         } catch (NoSuchMethodException e) {
+                            e.printStackTrace(Main.debug);
                             klasse = klasse.getSuperclass();
                         } catch (Exception e) {
                             e.printStackTrace(Main.debug);

@@ -13,4 +13,4 @@ Client de messagerie;filius.software.email.EmailAnwendung;filius.gui.anwendungss
 Gnutella (P2P);filius.software.dateiaustausch.PeerToPeerAnwendung;filius.gui.anwendungssicht.GUIApplicationPeerToPeerAnwendungWindow;gfx/desktop/icon_peertopeer.png
 Ransomware;filius.software.ransomware.Ransomware;filius.gui.anwendungssicht.GUIApplicationRansomware;gfx/desktop/icon_terminal.png
 WannaCry;filius.software.wannacry.WannaCry;filius.gui.anwendungssicht.GUIApplicationWannaCry;gfx/desktop/icon_terminal.png
-SMBServer;filius.software.clientserver.SMBServer;filius.gui.anwendungssicht.GUIApplicationSMBServer;gfx/desktop/icon_browser.png
+SMBServerAnwendung;filius.software.SMB.SMBServerAnwendung;filius.gui.anwendungssicht.GUIApplicationSMBServer;gfx/desktop/icon_browser.png

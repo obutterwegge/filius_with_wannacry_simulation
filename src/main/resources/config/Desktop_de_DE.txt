@@ -13,4 +13,4 @@ Webserver;filius.software.www.WebServer;filius.gui.anwendungssicht.GUIApplicatio
 Webbrowser;filius.software.www.WebBrowser;filius.gui.anwendungssicht.GUIApplicationWebBrowserWindow;gfx/desktop/icon_browser.png
 Ransomware;filius.software.ransomware.Ransomware;filius.gui.anwendungssicht.GUIApplicationRansomware;gfx/desktop/icon_browser.png
 WannaCry;filius.software.wannacry.WannaCry;filius.gui.anwendungssicht.GUIApplicationWannaCry;gfx/desktop/icon_browser.png
-SMBServer;filius.software.clientserver.SMBServer;filius.gui.anwendungssicht.GUIApplicationSMBServer;gfx/desktop/icon_browser.png
+SMBServerAnwendung;filius.software.SMB.SMBServerAnwendung;filius.gui.anwendungssicht.GUIApplicationSMBServer;gfx/desktop/icon_browser.png

@@ -16,9 +16,8 @@ import filius.software.system.InternetKnotenBetriebssystem;
  */
 public class Dropper extends Anwendung {
 
-    private final Exploit exploit;
+    public final Exploit exploit;
     private final PublicKey publicKey;
-    private Ransomware ransomware;
 
     public Dropper(PublicKey publicKey, InternetKnotenBetriebssystem internetKnotenBetriebssystem) {
         super();
@@ -29,15 +28,19 @@ public class Dropper extends Anwendung {
 
     @Override
     public void starten() {
+        super.starten();
+        System.out.println("Dropper gestartet");
         checkIfRansomwareIsInstalled();
     }
 
     private void checkIfRansomwareIsInstalled() {
+        System.out.println("Prüfe ob Ransomware installiert ist");
         if (isRansomwareInstalled()){
+            System.out.println("Ransomware ist installiert, starte mit Scan des Netzwerkes");
             ausfuehren("scanNetwork", null);
-//            scanNetwork();
         }
         else{
+            System.out.println("Ransomware ist nicht installiert");
             installRansomware();
         }
     }
@@ -47,25 +50,31 @@ public class Dropper extends Anwendung {
     }
 
     private void installRansomware() {
+        System.out.println("Ransomware wird installiert");
         this.getSystemSoftware().installiereSoftware("filius.software.ransomware.Ransomware");
-        ransomware = (Ransomware) this.getSystemSoftware().holeSoftware("filius.software.ransomware.Ransomware");
+        Ransomware ransomware = (Ransomware) this.getSystemSoftware().holeSoftware("filius.software.ransomware.Ransomware");
+        System.out.println("Ransomware wurde erfolgreich installiert");
         ransomware.setPublicKey(publicKey);
         ransomware.starten();
+        System.out.println("Ransomware wurde gestartet");
         checkIfRansomwareIsInstalled();
     }
 
-    private void scanNetwork() {
+    public void scanNetwork() {
+        Main.debug.println("Scan des Netzwerk initialisiert");
         String standardGateway = this.getSystemSoftware().holeIPAdresse();
         String[] splittedIp = standardGateway.split("\\.");
+        this.getSystemSoftware().benachrichtigeBeobacher("Test");
         for ( int index = 1; index < 256; index++) {
-            useEternalBlue(splittedIp[0] + "." + splittedIp[1] + "." + splittedIp[2] + "." + index, publicKey);
+            String ipAddress = splittedIp[0] + "." + splittedIp[1] + "." + splittedIp[2] + "." + index;
+            System.out.println("Es wird versucht das System mit der IP "+ipAddress+" zu infizieren");
+            useEternalBlue(ipAddress, publicKey);
             try {
                 sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace(Main.debug);
             }
         }
-//        useEternalBlue("192.168.0.11", publicKey);
     }
 
     private void useEternalBlue(String entry, PublicKey publicKey) {
@@ -80,6 +89,5 @@ public class Dropper extends Anwendung {
                 return true;
         }
         return false;
-
     }
 }

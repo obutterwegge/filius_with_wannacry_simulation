@@ -29,11 +29,13 @@ import java.util.LinkedList;
 
 import filius.Main;
 import filius.exception.ServerSocketException;
+import filius.exception.SocketException;
 import filius.rahmenprogramm.I18n;
 import filius.software.Anwendung;
 import filius.software.transportschicht.ServerSocket;
 import filius.software.transportschicht.Socket;
 import filius.software.transportschicht.SocketSchnittstelle;
+import filius.software.transportschicht.TCPSocket;
 
 /**
  * Diese Klasse ist die Oberklasse fuer Serveranwendungen. Dazu wird ein Server-Socket und Methoden zur

@@ -133,6 +133,7 @@ public abstract class TransportProtokoll extends Protokoll implements I18n, Runn
                 + port + "," + socket + ")");
         synchronized (portTabelle) {
             if (portTabelle.containsKey(port)) {
+                Main.debug.println("Die Aktuelle Porttabelle sieht wie folgt aus +" + portTabelle.toString());
                 Main.debug.println("ERROR (" + this.hashCode() + "): Port " + port + " ist bereits belegt!");
                 return false;
             } else {
