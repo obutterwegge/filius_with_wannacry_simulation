@@ -1,4 +1,4 @@
-package filius.software.SMB;
+package filius.software.smb;
 
 import java.io.Serializable;
 

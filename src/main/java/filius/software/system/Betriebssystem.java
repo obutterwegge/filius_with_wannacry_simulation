@@ -67,18 +67,10 @@ public class Betriebssystem extends InternetKnotenBetriebssystem {
 
         dhcpServer = new DHCPServer();
         dhcpServer.setSystemSoftware(this);
-        createTestFiles();
+
     }
 
-    private void createTestFiles() {
-        for (int i = 0; i < 100; i++){
-            Datei datei = new Datei();
-            datei.setDateiInhalt("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
-            datei.setName("Test"+i+".txt");
-            datei.setDateiTyp("txt");
-            getDateisystem().speicherDatei("", datei);
-        }
-    }
+
 
     @Override
     public boolean isRipEnabled() {

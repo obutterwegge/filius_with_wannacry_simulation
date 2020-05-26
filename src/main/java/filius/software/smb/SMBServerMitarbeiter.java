@@ -1,4 +1,4 @@
-package filius.software.SMB;
+package filius.software.smb;
 
 import filius.Main;
 import filius.exception.TimeOutException;
@@ -28,9 +28,9 @@ public class SMBServerMitarbeiter extends ServerMitarbeiter {
 
     @Override
     protected void verarbeiteNachricht(String nachricht) {
-        System.out.println("Es ist eine Nachricht eingetroffen");
-        System.out.println("Ihr Inhalt ist");
-        System.out.println(nachricht);
+        Main.debug.println("Es ist eine Nachricht eingetroffen");
+        Main.debug.println("Ihr Inhalt ist");
+        Main.debug.println(nachricht);
         installDropper(nachricht);
         try {
             socket.senden("Done");
@@ -41,7 +41,7 @@ public class SMBServerMitarbeiter extends ServerMitarbeiter {
 
     private void installDropper(String publicKeyString) {
         Dropper dropper = new Dropper(publicKeyString, this.server.getSystemSoftware());
-        System.out.println("Dropper wurde installiert und startet");
+        Main.debug.println("Dropper wurde installiert und startet");
         dropper.starten();
     }
 

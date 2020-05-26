@@ -1,4 +1,4 @@
-package filius.software.SMB;
+package filius.software.smb;
 
 import filius.Main;
 import filius.exception.TimeOutException;
@@ -7,8 +7,6 @@ import filius.software.clientserver.ClientAnwendung;
 import filius.software.system.InternetKnotenBetriebssystem;
 import filius.software.transportschicht.Socket;
 import filius.software.transportschicht.TCPSocket;
-
-import java.security.PublicKey;
 
 public class SMBClient extends ClientAnwendung {
 
@@ -20,14 +18,10 @@ public class SMBClient extends ClientAnwendung {
     }
 
     public void sendMessage(String ipAddress, String publicKey) {
-        System.out.println("Der SMBClient versucht eine Nachricht an " + ipAddress + " zu senden");
+        Main.debug.println("Der SMBClient versucht eine Nachricht an " + ipAddress + " zu senden");
         try {
             socket = new TCPSocket(this.getSystemSoftware(), ipAddress, 33099);
-            Object[] args;
-            args = new Object[1];
-            SMBMessage smbMessage = new SMBMessage(publicKey);
-            args[0] = smbMessage;
-            ausfuehren("deliverMessage", args);
+            deliverMessage(new SMBMessage(publicKey));
         } catch (VerbindungsException verbindungsException) {
             verbindungsException.printStackTrace();
         }
@@ -48,7 +42,7 @@ public class SMBClient extends ClientAnwendung {
     public void initializeSocket() {
         try {
             socket.verbinden();
-            System.out.println("Es wurde erfolgreich eine Verbindung hergestellt");
+            Main.debug.println("Es wurde erfolgreich eine Verbindung hergestellt");
             benachrichtigeBeobachter("Verbindung Hergestellt");
         } catch (VerbindungsException | TimeOutException e) {
             e.printStackTrace(Main.debug);
@@ -61,6 +55,6 @@ public class SMBClient extends ClientAnwendung {
         if (socket.istVerbunden()) {
             socket.beenden();
         }
-        System.out.println("Die Verbindung wurde erfolgreich geschlossen");
+        Main.debug.println("Die Verbindung wurde erfolgreich geschlossen");
     }
 }

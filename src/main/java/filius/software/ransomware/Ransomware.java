@@ -1,17 +1,11 @@
 package filius.software.ransomware;
 
+import filius.Main;
 import filius.software.Anwendung;
 import filius.software.system.Datei;
 import filius.software.system.Dateisystem;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Enumeration;
 
@@ -38,13 +32,12 @@ public class Ransomware extends Anwendung {
      * Encrypt all Data in the Filesystem
      */
     public void encryptData() {
-        System.out.println("Verschlüsseln der Daten wird angefangen");
+        Main.debug.println("Verschlüsseln der Daten wird angefangen");
         Dateisystem dateisystem = getSystemSoftware().getDateisystem();
         for (Enumeration enumeration = dateisystem.getRoot().children(); enumeration.hasMoreElements();) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
             if (node.getUserObject() instanceof Datei) {
                 Datei tmpDatei = (Datei) node.getUserObject();
-                System.out.println("Datei "+ tmpDatei.getName() + " wird verschlüsselt");
                 if (!"PrivateKey.txt".equals(tmpDatei.getName())){
                     // TODO: 18.05.20 Implement the asymmetric cryptography
                     /*
@@ -59,9 +52,12 @@ public class Ransomware extends Anwendung {
                     // TODO: 18.05.20 Delete after the asymmetric cryptography is implemented
                     Base64.Encoder encoder = Base64.getEncoder();
                     tmpDatei.setDateiInhalt(encoder.encodeToString(tmpDatei.getDateiInhalt().getBytes()));
+                    Main.debug.println("Datei "+ tmpDatei.getName() + " ist verschlüsselt");
                 }
             }
         }
+
+        this.getSystemSoftware().benachrichtigeBeobacher("Das System mit der IP-Addresse: "+this.getSystemSoftware().holeIPAdresse()+" ist nun verschlüsselt");
         //this.benachrichtigeBeobachter();
     }
 
@@ -69,13 +65,12 @@ public class Ransomware extends Anwendung {
      * Decrypt all Data in the Filesystem
      */
     public void decryptData(String privateKeyString) {
-        System.out.println("Entschlüsselung fängt an");
+        Main.debug.println("Entschlüsselung fängt an");
 //        PrivateKey privateKey = (PrivateKey) args[0];
         for (Enumeration enumeration = this.getSystemSoftware().getDateisystem().getRoot().children(); enumeration.hasMoreElements();) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) enumeration.nextElement();
             if (node.getUserObject() instanceof Datei) {
                 Datei tmpDatei = (Datei) node.getUserObject();
-                System.out.println("Datei"+ tmpDatei.getName() + "wird entschlüsselt");
                 if (!"PrivateKey.txt".equals(tmpDatei.getName())) {
                     // TODO: 18.05.20 Implement the asymmetric cryptography
                     /*try {
@@ -90,6 +85,7 @@ public class Ransomware extends Anwendung {
                     Base64.Decoder decoder = Base64.getDecoder();
                     byte[] decodedContentInByte = decoder.decode(tmpDatei.getDateiInhalt().getBytes());
                     tmpDatei.setDateiInhalt(new String(decodedContentInByte));
+                    Main.debug.println("Datei"+ tmpDatei.getName() + " ist entschlüsselt");
                 }
             }
         }
@@ -100,7 +96,7 @@ public class Ransomware extends Anwendung {
      * @param privateKeyString From the Textfield the private-key for the decryption
      */
     public void decryptDataAsyncrhon(String privateKeyString) {
-        System.out.println("Entschlüsselung aller Dateien wird ausgeführt");
+        Main.debug.println("Entschlüsselung aller Dateien wird ausgeführt");
 //        Base64.Decoder decoder = Base64.getDecoder();
 //        byte[] privateKeyByte = decoder.decode(privateKeyString);
         // TODO: 18.05.20 Richtige Implementierung des PrivateKey

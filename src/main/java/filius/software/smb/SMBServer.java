@@ -1,4 +1,4 @@
-package filius.software.SMB;
+package filius.software.smb;
 
 import filius.software.clientserver.ServerAnwendung;
 import filius.software.transportschicht.Socket;

@@ -1,13 +1,13 @@
 package filius.software.dropper;
 
-import java.security.PublicKey;
-import java.util.HashMap;
-
 import filius.Main;
 import filius.software.Anwendung;
 import filius.software.exploit.Exploit;
 import filius.software.ransomware.Ransomware;
+import filius.software.resourceloader.ResourceLoader;
 import filius.software.system.InternetKnotenBetriebssystem;
+
+import java.util.HashMap;
 
 /**
  * @author Oliver Butterwegge 
@@ -29,48 +29,45 @@ public class Dropper extends Anwendung {
     @Override
     public void starten() {
         super.starten();
-        System.out.println("Dropper gestartet");
+        Main.debug.println("Dropper gestartet");
         checkIfRansomwareIsInstalled();
     }
 
     private void checkIfRansomwareIsInstalled() {
-        System.out.println("Prüfe ob Ransomware installiert ist");
+        Main.debug.println(this.getSystemSoftware().holeIPAdresse()+": Prüfe ob Ransomware installiert ist");
         if (isRansomwareInstalled()){
-            System.out.println("Ransomware ist installiert, starte mit Scan des Netzwerkes");
+            Main.debug.println("Ransomware ist installiert, starte mit Scan des Netzwerkes");
             ausfuehren("scanNetwork", null);
         }
         else{
-            System.out.println("Ransomware ist nicht installiert");
-            installRansomware();
+            Main.debug.println("Ransomware ist nicht installiert");
+            installResourceLoader();
         }
     }
 
-    public String getPublicKey(){
-        return publicKey;
-    }
-
-    private void installRansomware() {
-        System.out.println("Ransomware wird installiert");
-        this.getSystemSoftware().installiereSoftware("filius.software.ransomware.Ransomware");
-        Ransomware ransomware = (Ransomware) this.getSystemSoftware().holeSoftware("filius.software.ransomware.Ransomware");
-        System.out.println("Ransomware wurde erfolgreich installiert");
-        ransomware.setPublicKey(publicKey);
-        ransomware.starten();
-        System.out.println("Ransomware wurde gestartet");
+    private void installResourceLoader() {
+        Main.debug.println(this.getSystemSoftware().holeIPAdresse()+": ResourceLoader wird installiert");
+        ResourceLoader resourceLoader = new ResourceLoader(this.getSystemSoftware());
+        resourceLoader.installRansomware(publicKey);
         checkIfRansomwareIsInstalled();
     }
 
+    /*
+     * Must be public because otherwise it couldn't be run asynchron
+     */
     public void scanNetwork() {
         Main.debug.println("Scan des Netzwerk initialisiert");
         String standardGateway = this.getSystemSoftware().holeIPAdresse();
         String[] splittedIp = standardGateway.split("\\.");
-        this.getSystemSoftware().benachrichtigeBeobacher("Test");
         for ( int index = 1; index < 256; index++) {
-            String ipAddress = splittedIp[0] + "." + splittedIp[1] + "." + splittedIp[2] + "." + index;
-            System.out.println("Es wird versucht das System mit der IP "+ipAddress+" zu infizieren");
-            useEternalBlue(ipAddress, publicKey);
+            int random = (int) Math.floor(Math.random() * 25);
+            String ipAddress = splittedIp[0] + "." + splittedIp[1] + "." + splittedIp[2] + "." + random;
+            if (!ipAddress.equals(this.getSystemSoftware().holeIPAdresse())){
+                Main.debug.println("Es wird versucht das System mit der IP "+ipAddress+" zu infizieren");
+                useEternalBlue(ipAddress, publicKey);
+            }
             try {
-                sleep(500);
+                sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace(Main.debug);
             }

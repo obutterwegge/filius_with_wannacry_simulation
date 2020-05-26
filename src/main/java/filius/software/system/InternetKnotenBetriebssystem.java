@@ -25,15 +25,7 @@
  */
 package filius.software.system;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import filius.Main;
-import filius.exception.TimeOutException;
 import filius.exception.VerbindungsException;
 import filius.hardware.NetzwerkInterface;
 import filius.hardware.knoten.InternetKnoten;
@@ -44,20 +36,17 @@ import filius.rahmenprogramm.EingabenUeberpruefung;
 import filius.rahmenprogramm.FiliusClassLoader;
 import filius.rahmenprogramm.Information;
 import filius.software.Anwendung;
-import filius.software.SMB.SMBServerAnwendung;
+import filius.software.smb.SMBServerAnwendung;
 import filius.software.dns.Resolver;
 import filius.software.netzzugangsschicht.Ethernet;
 import filius.software.netzzugangsschicht.EthernetThread;
 import filius.software.rip.RIPTable;
 import filius.software.transportschicht.TCP;
-import filius.software.transportschicht.TCPSocket;
 import filius.software.transportschicht.UDP;
-import filius.software.vermittlungsschicht.ARP;
-import filius.software.vermittlungsschicht.ICMP;
-import filius.software.vermittlungsschicht.IP;
-import filius.software.vermittlungsschicht.Route;
-import filius.software.vermittlungsschicht.RouteNotFoundException;
-import filius.software.vermittlungsschicht.Weiterleitungstabelle;
+import filius.software.vermittlungsschicht.*;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Diese Klasse implementiert die Funktionalitaet eines Betriebssystems für
@@ -164,13 +153,15 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
         dnsclient.setSystemSoftware(this);
 
         //On each InternetKnoten must be the SMBServer
-        this.installiereSoftware("filius.software.SMB.SMBServerAnwendung");
+        Main.debug.println("Installiere SMBServer");
+        this.installiereSoftware("filius.software.smb.SMBServerAnwendung");
         // print IDs for all network layers and the according node --> for
         // providing debug support in log file
         Main.debug.println("DEBUG: InternetKnotenBetriebssystem (" + this.hashCode() + ")\n" + "\tEthernet: "
                 + ethernet.hashCode() + "\n" + "\tARP: " + arpVermittlung.hashCode() + "\n" + "\tIP: "
                 + vermittlung.hashCode() + "\n" + "\tICMP: " + icmpVermittlung.hashCode() + "\n" + "\tTCP: "
                 + tcp.hashCode() + "\n" + "\tUDP: " + udp.hashCode());
+        createTestFiles();
     }
 
     /**
@@ -375,7 +366,16 @@ public abstract class InternetKnotenBetriebssystem extends SystemSoftware {
         Main.debug.println("INVOKED (" + this.hashCode() + ") " + getClass()
                 + " (InternetKnotenBetriebssystem), setInstallierteAnwendungen()");
         this.installierteAnwendung = anwendungen;
-        // printInstallierteAnwendungen();
+    }
+
+    private void createTestFiles() {
+        for (int i = 0; i < 100; i++){
+            Datei datei = new Datei();
+            datei.setDateiInhalt("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
+            datei.setName("Test"+i+".txt");
+            datei.setDateiTyp("txt");
+            getDateisystem().speicherDatei("", datei);
+        }
     }
 
     /**

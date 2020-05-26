@@ -45,7 +45,7 @@ public class WannaCry extends Anwendung{
         privateKeyFile.setName("PrivateKey.txt");
         if (!this.getSystemSoftware().getDateisystem().dateiVorhanden("", "PrivateKey.txt"))
             this.getSystemSoftware().getDateisystem().speicherDatei("", privateKeyFile);
-        System.out.println("PrivateKey in Datei geschrieben");
+        Main.debug.println("PrivateKey in Datei geschrieben");
     }
 
     /**
@@ -65,7 +65,7 @@ public class WannaCry extends Anwendung{
     }
 
     public void starteWannaCryAttack(){
-        System.out.println("Starte WannaCry Attack");
+        Main.debug.println("Starte WannaCry Attack");
         Dropper dropper = new Dropper(publicKey.toString(), this.getSystemSoftware());
         dropper.starten();
     }
