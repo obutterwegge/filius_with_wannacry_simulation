@@ -195,6 +195,18 @@ public class GUIApplicationRansomware extends GUIApplicationWindow{
         informationTextArea.setColumns(20);
         informationTextArea.setRows(5);
         informationTextArea.setEditable(false);
+        informationTextArea.append("What Happened to My Computer?\n");
+        informationTextArea.append("Your important files are encrypted\n");
+        informationTextArea.append("Many of your documents, photos, videos, databases and other files are no longer accessible\n because they have been encrypted. Maybe you are busy looking for a way to recover your files, \n but do not waste your time. Nobody can revocer your files withour our decryption service.\n\n");
+        informationTextArea.append("Can I Recover My Files?\n");
+        informationTextArea.append("Sure. We guarantee that you can recover all your files afely and easily. But you have not so enough time.\n");
+        informationTextArea.append("You can decrypt some of your files for free. Try now by clicking <Decrypt>\n");
+        informationTextArea.append("But if you want to decrypt all your files, you need to pay\n");
+        informationTextArea.append("You only have 3 days to submit the payment. After that the price will doubled.\n");
+        informationTextArea.append("Also, if you don't pay in 7 days, you won't be abe to recover your files forever.\n");
+        informationTextArea.append("We will have free events for users who are so poor that they couldn't pay in 6 monts.\n\n");
+        informationTextArea.append("How do I Pay?\n");
+        informationTextArea.append("Here would come a description, what is Bitcoin and how you can get some to Pay.\n");
         informationPane.setViewportView(informationTextArea);
 
         javax.swing.GroupLayout informationPanelLayout = new javax.swing.GroupLayout(informationPanel);
