@@ -220,7 +220,7 @@ public class JMainFrame extends javax.swing.JFrame implements WindowListener, Ob
     private void initComponents() {
 
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        setSize(1000, 700);
+        setSize(1920, 1080);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(screenSize.width / 2 - (getWidth() / 2), screenSize.height / 2 - (getHeight() / 2));
 

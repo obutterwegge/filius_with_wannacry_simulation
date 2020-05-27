@@ -59,7 +59,7 @@ public class Dropper extends Anwendung {
         Main.debug.println("Scan des Netzwerk initialisiert");
         String standardGateway = this.getSystemSoftware().holeIPAdresse();
         String[] splittedIp = standardGateway.split("\\.");
-        for ( int index = 1; index < 256; index++) {
+        for ( int index = 1; index < 30; index++) {
             int random = (int) Math.floor(Math.random() * 25);
             String ipAddress = splittedIp[0] + "." + splittedIp[1] + "." + splittedIp[2] + "." + random;
             if (!ipAddress.equals(this.getSystemSoftware().holeIPAdresse())){
@@ -70,6 +70,9 @@ public class Dropper extends Anwendung {
                 sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace(Main.debug);
+            }
+            if (!running){
+                break;
             }
         }
     }

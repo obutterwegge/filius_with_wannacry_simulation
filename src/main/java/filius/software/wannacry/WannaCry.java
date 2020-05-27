@@ -64,7 +64,7 @@ public class WannaCry extends Anwendung{
         return privateKey.toString();
     }
 
-    public void starteWannaCryAttack(){
+    public void startWannaCryAttack(){
         Main.debug.println("Starte WannaCry Attack");
         Dropper dropper = new Dropper(publicKey.toString(), this.getSystemSoftware());
         dropper.starten();

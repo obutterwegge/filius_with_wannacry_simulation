@@ -82,7 +82,7 @@ public class GUIDesktopWindow extends JFrame implements Observer {
 		ImageIcon icon = new ImageIcon(getClass().getResource("/" + imageFile));
 		setIconImage(icon.getImage());
 
-		setSize(640, 480);
+		setSize(1920, 1080);
 		// setBounds(100, 100, 640, 480);
 		setResizable(false);
 
