@@ -46,14 +46,7 @@ import java.util.ListIterator;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.filechooser.FileFilter;
 
@@ -992,4 +985,12 @@ public class GUIContainer implements Serializable, I18n {
         return height;
     }
 
+    public void updateKnotenImage(Knoten knoten, String imageIcon) {
+        Main.debug.println(this.getClass().getResource(""));
+        Icon icon = new ImageIcon(getClass().getResource("/"+imageIcon));
+        nodeItems.forEach((node) -> {
+            if (node.getKnoten().equals(knoten))
+                node.getImageLabel().setIcon(icon);
+        });
+    }
 }

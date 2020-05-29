@@ -1,10 +1,12 @@
 package filius.software.ransomware;
 
 import filius.Main;
+import filius.gui.GUIContainer;
 import filius.software.Anwendung;
 import filius.software.system.Datei;
 import filius.software.system.Dateisystem;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.Base64;
 import java.util.Enumeration;
@@ -56,9 +58,14 @@ public class Ransomware extends Anwendung {
                 }
             }
         }
-
-        this.getSystemSoftware().benachrichtigeBeobacher("Das System mit der IP-Addresse: "+this.getSystemSoftware().holeIPAdresse()+" ist nun verschlüsselt");
-        //this.benachrichtigeBeobachter();
+        String iconPath;
+        if (this.getSystemSoftware().getKnoten().holeHardwareTyp().equals("Notebook")){
+            iconPath  = "gfx/hardware/laptop_encrypted.png";
+        } else {
+            iconPath = "gfx/hardware/server_encrypted.png";
+        }
+        GUIContainer.getGUIContainer().updateKnotenImage(this.getSystemSoftware().getKnoten(), iconPath);
+        this.getSystemSoftware().benachrichtigeBeobacher(null);
     }
 
     /**
@@ -89,6 +96,14 @@ public class Ransomware extends Anwendung {
                 }
             }
         }
+
+        String iconPath;
+        if (this.getSystemSoftware().getKnoten().holeHardwareTyp().equals("Notebook")){
+            iconPath  = "gfx/hardware/laptop.png";
+        } else {
+            iconPath = "gfx/hardware/server.png";
+        }
+        GUIContainer.getGUIContainer().updateKnotenImage(this.getSystemSoftware().getKnoten(), iconPath);
     }
 
     /**
