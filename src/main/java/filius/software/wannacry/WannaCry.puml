@@ -1,0 +1,18 @@
+ @startuml
+
+package "WannaCry" {
+[Dropper] - [Ransomware] : install/run
+Start - [Dropper]
+
+[Dropper] - [Exploit] : install/run
+[Exploit] - [SMBClient] : use
+}
+
+package "SMB Server" {
+[SMBClient] ..> SMB : send Message
+[SMBServer] <- SMB : receive Message
+[SMBServerMitarbeiter] - [SMBServer] : forward Message
+[SMBServerMitarbeiter] ..> Start
+}
+
+@enduml
