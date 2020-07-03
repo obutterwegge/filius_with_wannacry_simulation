@@ -5,4 +5,4 @@ This is a Fork from [Filius](svn.savannah.nongnu.org/viewvc/filius/)
 2. Run ```mvn compile```
 3. Run ```mvn package```
 4. copy src/main/resources/config to target/
-5. Run ```java -jar filius.jar```
+5. Run ```java -jar target/filius.jar```
